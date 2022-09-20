@@ -1,9 +1,10 @@
 package com.codej.serviceImp;
 
 import com.codej.model.Categoria;
+import com.codej.model.Inventario;
 import com.codej.model.Marca;
 import com.codej.model.Product;
-import com.codej.repository.IProductRepository;
+import com.codej.repository.*;
 import com.codej.service.IProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +17,12 @@ import java.util.List;
 public class ProductServiceImp implements IProductService {
 
     private IProductRepository productRepository;
+    private IInventarioRepository inventarioRepository;
 
-    public ProductServiceImp(IProductRepository productRepository) {
+    public ProductServiceImp(IProductRepository productRepository,
+                                IInventarioRepository inventarioRepository) {
         this.productRepository = productRepository;
+        this.inventarioRepository = inventarioRepository;
     }
 
     @Override
@@ -56,4 +60,16 @@ public class ProductServiceImp implements IProductService {
     public List<Marca> findAllMarcas() {
         return productRepository.findAllMarcas();
     }
+
+    @Override
+    public Inventario guardar(Inventario inventario) {
+        return  inventarioRepository.save(inventario);
+    }
+
+    @Override
+    public Inventario findAllInventarioByProduct(Integer id) {
+        return productRepository.findAllInventarioByProduct(id);
+    }
+
+
 }

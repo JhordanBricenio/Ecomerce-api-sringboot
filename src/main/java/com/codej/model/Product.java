@@ -18,8 +18,6 @@ public class Product {
     private String slug;
 
     @Column(nullable = false)
-    @NotBlank(message = "titulo es obligatorio")
-    @Size(min = 3, max = 12, message = "Debe tener entre 3 e 100 caracteres")
     private String titulo;
 
 

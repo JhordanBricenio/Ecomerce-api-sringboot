@@ -16,4 +16,8 @@ public interface IProductService {
     public List<Categoria> findAllCategories();
     public List<Marca> findAllMarcas();
 
+    public Inventario guardar (Inventario inventario);
+
+    public Inventario findAllInventarioByProduct(Integer id);
+
 }

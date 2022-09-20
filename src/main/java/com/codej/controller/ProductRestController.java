@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,8 @@ public class ProductRestController {
     private IProductService productService;
     private IUploadService uploadService;
 
-    public ProductRestController(IProductService productService, IUploadService uploadService) {
+    public ProductRestController(IProductService productService, IUploadService uploadService
+                                 ) {
         this.productService = productService;
         this.uploadService = uploadService;
     }
@@ -42,7 +44,7 @@ public class ProductRestController {
     //Listar productos paginados
     @GetMapping("/products/page/{page}")
     public Page<Product> index(@PathVariable Integer page) {
-        Pageable pageable = PageRequest.of(page, 3);
+        Pageable pageable = PageRequest.of(page, 4);
         return productService.findAll(pageable);
     }
 
@@ -62,6 +64,12 @@ public class ProductRestController {
         }
         try {
             productNew = productService.save(product);
+            Inventario inventario = new Inventario();
+            inventario.setProduct(productNew);
+            inventario.setCantidad(productNew.getStock());
+            inventario.setCreateAt(new Date());
+            productService.guardar(inventario);
+
         }catch (DataAccessException e){
             response.put("mensaje", "Error al realizar el insert en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -204,4 +212,22 @@ public class ProductRestController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    //Buscar inventario por producto
+    @GetMapping("/products/inventario/{id}")
+    public ResponseEntity<?> buscarInventario (@PathVariable Integer id) {
+        Inventario inventario = null;
+        Map<String, Object> response = new HashMap<>();
+        try {
+            inventario = productService.findAllInventarioByProduct(id);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (inventario ==null){
+            response.put("mensaje", "El Inventario ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        return  new ResponseEntity<Inventario>(inventario, HttpStatus.OK);
+    }
 }
