@@ -71,5 +71,15 @@ public class ProductServiceImp implements IProductService {
         return productRepository.findAllInventarioByProduct(id);
     }
 
+    @Override
+    public Product findBySlug(String slug) {
+        return productRepository.findBySlug(slug);
+    }
+
+    @Override
+    public List<Product> findByCategoria(Integer id) {
+        return productRepository.findByCategoria(id);
+    }
+
 
 }

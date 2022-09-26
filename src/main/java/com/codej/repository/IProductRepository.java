@@ -20,4 +20,11 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
     @Query("from Inventario where producto_id = ?1")
     public Inventario findAllInventarioByProduct(Integer id);
 
+    //Buscar producto por slug
+    public Product findBySlug(String slug);
+
+    //listar productos por categoria
+    @Query("from Product where categorias_id = ?1")
+    public List<Product> findByCategoria(Integer id);
+
 }

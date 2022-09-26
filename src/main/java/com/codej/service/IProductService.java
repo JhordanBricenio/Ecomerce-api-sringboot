@@ -20,4 +20,10 @@ public interface IProductService {
 
     public Inventario findAllInventarioByProduct(Integer id);
 
+    //Buscar producto por slug
+    public Product findBySlug(String slug);
+
+    //listar productos por categoria
+    public List<Product> findByCategoria(Integer id);
+
 }

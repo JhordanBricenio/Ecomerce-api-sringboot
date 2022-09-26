@@ -135,9 +135,6 @@ public class ClienteRestController {
     public ResponseEntity<?> delete(@PathVariable Integer id){
         Map<String, Object> response = new HashMap<>();
         try {
-            Cliente cliente = clienteService.findById(id);
-            //String nombreFotoAnt= cliente.getFoto();
-            // uploadService.eliminar(nombreFotoAnt);
             clienteService.delete(id);
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al eliminar en la base de datos");

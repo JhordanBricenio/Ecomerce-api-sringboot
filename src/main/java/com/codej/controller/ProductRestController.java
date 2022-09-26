@@ -44,7 +44,7 @@ public class ProductRestController {
     //Listar productos paginados
     @GetMapping("/products/page/{page}")
     public Page<Product> index(@PathVariable Integer page) {
-        Pageable pageable = PageRequest.of(page, 4);
+        Pageable pageable = PageRequest.of(page, 6);
         return productService.findAll(pageable);
     }
 
@@ -154,8 +154,8 @@ public class ProductRestController {
         Map<String, Object> response = new HashMap<>();
         try {
             Product product = productService.findById(id);
-            //String nombreFotoAnt= cliente.getFoto();
-           // uploadService.eliminar(nombreFotoAnt);
+            String nombreFotoAnt= product.getImagen();
+            uploadService.eliminar(nombreFotoAnt);
             productService.delete(id);
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al eliminar en la base de datos");
@@ -230,4 +230,31 @@ public class ProductRestController {
         }
         return  new ResponseEntity<Inventario>(inventario, HttpStatus.OK);
     }
+    //Buscar porducto por slug
+    @GetMapping("/products/slug/{slug}")
+    public ResponseEntity<?> buscarSlug (@PathVariable String slug) {
+        Product product = null;
+        Map<String, Object> response = new HashMap<>();
+        try {
+            product = productService.findBySlug(slug);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (product ==null){
+            response.put("mensaje", "El producto con el slug: ".concat(slug.concat(" no existe en la base de datos")));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        return  new ResponseEntity<Product>(product, HttpStatus.OK);
+    }
+    //Listar productos por categoria
+    @GetMapping("/products/categoria/{id}")
+    public List<Product> listProductsByCategory(@PathVariable Integer id) {
+            return productService.findByCategoria(id);
+    }
+
+
+
+
 }
