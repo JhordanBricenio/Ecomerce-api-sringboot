@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -21,7 +23,16 @@ public class Cliente {
     private String password;
     private String perfil;
     private String telefono;
+
+    private boolean enabled=true;
+
+    @Column(name = "fecha_nac")
+    @Temporal(TemporalType.DATE)
     private Date fechaNac;
     private String genero;
     private int dni;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cliente")
+    private Set<UsuarioRol> usuarioRoles = new HashSet<>();
+
 }
