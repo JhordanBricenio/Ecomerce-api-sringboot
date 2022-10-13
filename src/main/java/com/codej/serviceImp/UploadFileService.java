@@ -32,7 +32,8 @@ public class UploadFileService implements IUploadService {
 
     @Override
     public String copiar(MultipartFile archivo) throws IOException {
-        String nombreArchivo=archivo.getOriginalFilename().replace(" ","");
+        String nombreArchivo= UUID.randomUUID().toString()+ "_"+ archivo.getOriginalFilename().
+                replace(" ","");
         Path rutaArchiva= getPath(nombreArchivo);
         Files.copy(archivo.getInputStream(), rutaArchiva);
         return nombreArchivo;

@@ -1,13 +1,16 @@
 package com.codej.controller;
 
 import com.codej.model.Cliente;
+import com.codej.model.Rol;
 import com.codej.service.IClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +25,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class ClienteRestController {
     private IClienteService clienteService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public ClienteRestController(IClienteService clienteService) {
         this.clienteService = clienteService;
@@ -42,6 +48,10 @@ public class ClienteRestController {
     //Crear un nuevo cliente
     @PostMapping("/clientes")
     public ResponseEntity<?> create (@Valid @RequestBody Cliente cliente, BindingResult result){
+        if ( cliente.getPassword() != null && !cliente.getPassword().isEmpty() ){
+            cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
+        }
+
         Cliente clienteNew = null;
         Map<String, Object> response = new HashMap<>();
         if (result.hasErrors()){
@@ -53,6 +63,11 @@ public class ClienteRestController {
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
         }
         try {
+            /*AGregando el rol de cliente al usuario
+           Rol rol = new Rol();
+            rol.setId(7);
+            cliente.agregarRol(rol);*/
+
             clienteNew = clienteService.save(cliente);
         }catch (DataAccessException e){
             response.put("mensaje", "Error al realizar el insert en la base de datos");
@@ -88,6 +103,9 @@ public class ClienteRestController {
     @PutMapping("/clientes/{id}")
     public  ResponseEntity<?> update(@Valid @RequestBody Cliente cliente, BindingResult result
             ,@PathVariable Integer id){
+        if ( cliente.getPassword() != null && !cliente.getPassword().isEmpty() ){
+            cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
+        }
         Cliente updatedClient = null;
         Cliente clientActual = clienteService.findById(id);
         Map<String, Object> response = new HashMap<>();
@@ -109,7 +127,14 @@ public class ClienteRestController {
             clientActual.setApellidos(cliente.getApellidos());
             clientActual.setEmail(cliente.getEmail());
             clientActual.setPais(cliente.getPais());
-            clientActual.setPassword(cliente.getPassword());
+            if (cliente.getPassword() != null && !cliente.getPassword().isEmpty()){
+                clientActual.setPassword(cliente.getPassword());
+            }
+            else {
+                clientActual.setPassword(clientActual.getPassword());
+
+            }
+           // clientActual.setPassword(cliente.getPassword());
             clientActual.setPerfil(cliente.getPerfil());
             clientActual.setTelefono(cliente.getTelefono());
             clientActual.setFechaNac(cliente.getFechaNac());

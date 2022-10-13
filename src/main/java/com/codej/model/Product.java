@@ -22,6 +22,7 @@ public class Product {
 
 
     private double precio;
+    private String sku;
 
     private String descripcion;
     private String imagen;
@@ -43,6 +44,8 @@ public class Product {
     @PrePersist
     public void prePersist(){
         this.createdAt = new Date();
+        this.sku = generarSku();
+
     }
 
     @NotNull(message = "La categoria no puede ser vacia")
@@ -56,4 +59,34 @@ public class Product {
     @JoinColumn(name = "marca_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Marca marca;
+
+    //CRear funcion para slug
+    public String slugify(String input) {
+        String acentos = "áéíóúÁÉÍÓÚ";
+        String original = "aeiouAEIOU";
+        for (int i = 0; i < acentos.length(); i++) {
+            input = input.replace(acentos.charAt(i), original.charAt(i));
+        }
+        return input.toLowerCase().replaceAll("[^a-z0-9\\s]", "").replaceAll("\\s+", "-");
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+        this.slug = slugify(titulo);
+    }
+
+    //Generar sku
+    public String generarSku(){
+        String sku = "";
+        String[] palabras = this.titulo.split(" ");
+        for (int i = 0; i < palabras.length; i++) {
+            if (i < 3){
+                sku += palabras[i].substring(0, 3)+this.getId();
+            }
+        }
+        return sku.toUpperCase();
+    }
+
+
+
 }

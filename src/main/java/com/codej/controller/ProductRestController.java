@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -101,6 +102,7 @@ public class ProductRestController {
 
     }
 
+    @Secured("ROLE_ADMIN")
     @PutMapping("/products/{id}")
     public  ResponseEntity<?> update(@Valid @RequestBody Product product, BindingResult result
             ,@PathVariable Integer id){
@@ -149,6 +151,7 @@ public class ProductRestController {
 
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/products/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id){
         Map<String, Object> response = new HashMap<>();
@@ -175,6 +178,7 @@ public class ProductRestController {
     public List<Marca> listMarcas() {
         return productService.findAllMarcas();
     }
+
     @GetMapping("upload/img/{nombreFoto:.+}")
     public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto) {
         Resource recurso= null;
@@ -213,6 +217,7 @@ public class ProductRestController {
     }
 
     //Buscar inventario por producto
+    @Secured("ROLE_ADMIN")
     @GetMapping("/products/inventario/{id}")
     public ResponseEntity<?> buscarInventario (@PathVariable Integer id) {
         Inventario inventario = null;
