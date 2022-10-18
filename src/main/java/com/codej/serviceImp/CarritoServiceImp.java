@@ -1,12 +1,13 @@
 package com.codej.serviceImp;
 
 import com.codej.model.Carrito;
-import com.codej.model.Cliente;
 import com.codej.repository.ICarritoRepository;
 import com.codej.service.ICarritoService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
@@ -52,6 +53,16 @@ public class CarritoServiceImp implements ICarritoService {
     @Override
     public void deleteProduct(Integer id) {
         carritoRepository.deleteProduct(id);
+    }
+
+    @Override
+    public void deleteByCliente(Integer id) {
+        carritoRepository.deleteByCliente(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        carritoRepository.deleteAll();
     }
 
 

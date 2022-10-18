@@ -1,5 +1,6 @@
 package com.codej.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,6 +15,8 @@ public class Rol {
     private Integer id;
     private String nombre;
 
+
+    @JsonIgnoreProperties(value = {"roles","hibernateLazyInitializer", "handler"})
     @ManyToMany(mappedBy = "roles")
     private List<Cliente> clientes;
 

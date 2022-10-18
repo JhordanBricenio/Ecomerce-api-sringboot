@@ -1,7 +1,9 @@
 package com.codej.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -39,20 +41,29 @@ public class Cliente  {
         username = email;
     }
 
+
     @JsonIgnore
+    @JsonIgnoreProperties(value = {"clientes","hibernateLazyInitializer", "handler"})
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns =
     @JoinColumn(name = "rol_id"), uniqueConstraints = {@UniqueConstraint(columnNames = {"cliente_id", "rol_id"})})
     private List<Rol> roles;
 
     //Relacion con direcciones
-    @JsonIgnore
+    @JsonIgnoreProperties({"cliente","hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Direccion> direcciones;
+
+    //Relacion con ventas
+
+    @JsonIgnoreProperties({"cliente", "hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Venta> ventas;
 
     public Cliente() {
         this.roles = new ArrayList<>();
         this.direcciones = new ArrayList<>();
+        this.ventas = new ArrayList<>();
     }
 
    public void agregarRol(Rol rol) {

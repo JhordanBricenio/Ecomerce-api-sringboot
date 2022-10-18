@@ -16,4 +16,10 @@ public interface ICarritoService {
     public void delete(Integer id);
     //Eliminar producto del carrito
     public void deleteProduct(Integer id);
+
+    //Eliminar carrito por cliente
+    public void deleteByCliente(Integer id);
+
+    //limpiar carrito
+    public void deleteAll();
 }

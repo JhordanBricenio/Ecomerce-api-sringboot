@@ -79,4 +79,19 @@ public class CarritoRestController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
+    //Eliminar carrito por cliente
+    @DeleteMapping("/carrito/cliente/{id}")
+    public ResponseEntity<?> deleteByCliente(@PathVariable Integer id){
+        Map<String, Object> response = new HashMap<>();
+        try {
+            carritoService.deleteByCliente(id);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al eliminar producto del carrito en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("mensaje", "El producto del carrito fue eliminado con éxito");
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
 }

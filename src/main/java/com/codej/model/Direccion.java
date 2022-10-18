@@ -2,7 +2,7 @@ package com.codej.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 import javax.persistence.*;
 
@@ -25,9 +25,8 @@ public class Direccion {
     private boolean principal;
 
     //Relacion con direcciones
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"direcciones","hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "clientes_id")
     private Cliente cliente;
 
