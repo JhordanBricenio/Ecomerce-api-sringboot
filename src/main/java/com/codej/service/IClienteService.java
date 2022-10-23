@@ -1,6 +1,7 @@
 package com.codej.service;
 
 import com.codej.model.Cliente;
+import com.codej.model.Contacto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,5 +13,11 @@ public interface IClienteService {
     public Cliente findById(Integer id);
     public Cliente save (Cliente cliente);
     public void delete(Integer id);
+
+    public Contacto saveContact (Contacto contacto);
+
+    public List<Contacto> findAllContact();
+
+    public Contacto findContactById(Integer id);
 
 }

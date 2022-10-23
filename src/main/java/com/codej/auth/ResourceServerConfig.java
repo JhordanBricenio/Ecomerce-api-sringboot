@@ -25,12 +25,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/**", "/api/upload/img/**"
                         ,"/uploads/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/products", "/api/upload/img/**"
+                .antMatchers(HttpMethod.POST,"/api/products/**", "/api/upload/img/**"
                         ,"/uploads/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/clientes", "/api/upload/img/**"
                         ,"/uploads/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/categorias").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/categorias/**").permitAll()
+                .antMatchers(HttpMethod.PUT,"/api/categorias/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/ventas/**").permitAll()
+
+                .antMatchers(HttpMethod.POST,"/api/contacto/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/products/variedad/**").permitAll()
 
                 .antMatchers(HttpMethod.PUT,"/api/**", "/api/upload/img/**"
                 ,"/uploads/**").permitAll()

@@ -1,7 +1,9 @@
 package com.codej.serviceImp;
 
 import com.codej.model.Cliente;
+import com.codej.model.Contacto;
 import com.codej.repository.IClienteRepository;
+import com.codej.repository.IContactoRepository;
 import com.codej.service.IClienteService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +16,10 @@ import java.util.List;
 public class ClienteServiceImp implements IClienteService {
 
     private IClienteRepository clienteRepository;
+    private IContactoRepository contactoRepository;
 
-    public ClienteServiceImp(IClienteRepository clienteRepository) {
+    public ClienteServiceImp(IClienteRepository clienteRepository,IContactoRepository contactoRepository) {
+        this.contactoRepository = contactoRepository;
         this.clienteRepository = clienteRepository;
     }
 
@@ -43,5 +47,20 @@ public class ClienteServiceImp implements IClienteService {
     @Override
     public void delete(Integer id) {
         clienteRepository.deleteById(id);
+    }
+
+    @Override
+    public Contacto saveContact(Contacto contacto) {
+        return contactoRepository.save(contacto);
+    }
+
+    @Override
+    public List<Contacto> findAllContact() {
+        return contactoRepository.findAll();
+    }
+
+    @Override
+    public Contacto findContactById(Integer id) {
+        return contactoRepository.findById(id).orElse(null);
     }
 }

@@ -43,12 +43,9 @@ public class VentaRestController {
     //Obtener todas las ventas de un cliente
     @GetMapping("/ventas/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Venta show(@PathVariable Integer id){
-        return ventaService.findById(id);
+    public List<Venta> show(@PathVariable Integer id) {
+        return ventaService.findAllVentasPorId(id);
     }
-    //Crear factura
-
-
     @PostMapping("/ventas")
     public ResponseEntity<?> create (@Valid @RequestBody Venta venta, BindingResult result){
         venta.setNventa("N"+new Date().getTime());
@@ -88,12 +85,11 @@ public class VentaRestController {
 
     }
 
-
-    public String create(@RequestBody Venta venta){
-        //imprimir el objeto
-        logger.info("Venta: "+venta);
-        return "create";
+    //Obtener el detalle de una venta
+    @GetMapping("/ventas/detalle/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Venta showDetalle(@PathVariable Integer id) {
+        return ventaService.findById(id);
     }
-
 
 }

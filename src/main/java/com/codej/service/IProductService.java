@@ -26,4 +26,10 @@ public interface IProductService {
     //listar productos por categoria
     public List<Product> findByCategoria(Integer id);
 
+    //guagrar variedad
+    public Variedad guardar (Variedad variedad);
+
+    //Guardar galeria
+    public Imagen guardar (Imagen galeria);
+
 }

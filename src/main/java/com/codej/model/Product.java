@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -34,6 +35,11 @@ public class Product {
 
     private double npuntos=5;
 
+    private String titulo_variedad;
+    private String[] variedad;
+    //areglo de imagenes
+   // private String[] galeria;
+
 
     private String estado;
 
@@ -59,6 +65,15 @@ public class Product {
     @JoinColumn(name = "marca_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Marca marca;
+
+
+    @JsonIgnoreProperties({"producto","hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Variedad> variedades;
+
+    @JsonIgnoreProperties({"producto","hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Imagen> imagenes;
 
     //CRear funcion para slug
     public String slugify(String input) {
@@ -86,6 +101,8 @@ public class Product {
         }
         return sku.toUpperCase();
     }
+    //Genrar sku
+
 
 
 

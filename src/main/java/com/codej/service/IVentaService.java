@@ -13,4 +13,7 @@ public interface IVentaService {
     public Venta save (Venta venta);
     public void delete(Integer id);
 
+    //Obtener todas las ventas de un cliente
+    List<Venta> findAllVentasPorId(Integer id);
+
 }

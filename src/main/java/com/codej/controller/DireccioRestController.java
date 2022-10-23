@@ -27,13 +27,6 @@ public class DireccioRestController {
         return direccionService.save(direccion);
     }
 
- /*   @PutMapping("/direcciones/{id}")
-    public Categoria update(@RequestBody Direccion direccion, @PathVariable Integer id) {
-        Direccion direcionActual = direccionService.findById(id);
-        direcionActual.setNombre(categoria.getNombre());
-        direcionActual.setDescripcion(categoria.getDescripcion());
-        return categoriaService.save(categoriaActual);
-    }*/
     //Obtener por id
     @GetMapping("/direcciones/{id}")
     public List<Direccion> show(@PathVariable Integer id) {

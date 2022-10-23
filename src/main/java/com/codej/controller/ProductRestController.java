@@ -3,7 +3,9 @@ package com.codej.controller;
 import com.codej.model.*;
 import com.codej.service.IProductService;
 import com.codej.service.IUploadService;
+import com.google.gson.Gson;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -181,16 +185,20 @@ public class ProductRestController {
 
     @GetMapping("upload/img/{nombreFoto:.+}")
     public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto) {
+        Path rutaArchivo = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
         Resource recurso= null;
         try{
-            recurso=uploadService.cargar(nombreFoto);
+            recurso= new UrlResource(rutaArchivo.toUri());
         }
         catch (MalformedURLException e){
             e.printStackTrace();
         }
+        if (!recurso.exists() && !recurso.isReadable()){
+            throw new RuntimeException("Error: no se puede cargar la imagen: "+ nombreFoto);
+        }
         HttpHeaders cabecera= new HttpHeaders();
         cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+recurso.getFilename()+ "\"");
-        return  new ResponseEntity<>(recurso, cabecera, HttpStatus.OK);
+        return  new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
     }
 
     @PostMapping("/products/upload")
@@ -260,6 +268,56 @@ public class ProductRestController {
     }
 
 
+    //Relacionar producto con varieda
+    @PostMapping("/products/variedad")
+    public ResponseEntity<?> addVariedad(@RequestBody Variedad variedad) {
+        Variedad variedadNew = null;
+        Map<String, Object> response = new HashMap<>();
+        try {
+            variedadNew = productService.guardar(variedad);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar el insert en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("mensaje", "La variedad ha sido creada con éxito");
+        response.put("variedad", variedadNew);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 
+    }
+
+    //Añadir galeria de imagenes a producto
+    @PostMapping("/products/galeria")
+    public ResponseEntity<?> uploadGaleria(@RequestParam("file") MultipartFile archivo, @RequestParam("galeria")
+    String galeria) {
+        Map<String, Object> response = new HashMap<>();
+        Gson gson = new Gson();
+        Imagen imagen = gson.fromJson(galeria, Imagen.class);
+
+        if(!archivo.isEmpty()){
+            String nombreArchivo= null;
+            try {
+                nombreArchivo= uploadService.copiar(archivo);
+            }catch (IOException e){
+                response.put("mensaje", "Error al subir la imagen del producto ");
+                response.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));
+                return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            System.out.println(imagen.getId());
+            System.out.println(imagen.getUrl());
+            System.out.println(imagen.getDescripcion());
+            System.out.println(imagen.getProducto());
+
+            //Establacecemos la imagen
+            imagen.setUrl(nombreArchivo);
+            imagen.setDescripcion(imagen.getDescripcion());
+            imagen.setProducto(imagen.getProducto());
+            //Guardamos la imagen
+             productService.guardar(imagen);
+            response.put("imagen", imagen);
+            response.put("mensaje", "Has subido corectamente la imagen"+nombreArchivo);
+        }
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    }
 
 }

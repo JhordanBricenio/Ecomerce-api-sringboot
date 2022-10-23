@@ -15,6 +15,7 @@ public class Carrito {
     private int id;
     private double cantidad;
     private double precio;
+    private String talla;
 
     @NotNull(message = "El producto no puede ser vacio")
     @ManyToOne(fetch = FetchType.LAZY)

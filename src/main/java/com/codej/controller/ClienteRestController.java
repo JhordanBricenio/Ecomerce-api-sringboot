@@ -1,6 +1,7 @@
 package com.codej.controller;
 
 import com.codej.model.Cliente;
+import com.codej.model.Contacto;
 import com.codej.model.Rol;
 import com.codej.service.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,5 +171,72 @@ public class ClienteRestController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
+    //Contacto
+    @PostMapping("/contacto")
+    public ResponseEntity<?> createContacto(@Valid @RequestBody Contacto contacto, BindingResult result){
+        Contacto contactoNew = null;
+        contacto.setEstado("Pendiente");
+        Map<String, Object> response = new HashMap<>();
+        if (result.hasErrors()){
+            List<String> errors= result.getFieldErrors()
+                    .stream()
+                    .map(err -> "El campo '"+err.getField()+"' "+err.getDefaultMessage())
+                    .collect(Collectors.toList());
+            response.put("errors", errors);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+        }
+        try {
+            contactoNew = clienteService.saveContact(contacto);
+        }catch (DataAccessException e){
+            response.put("mensaje", "Error al realizar el insert en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("mensaje", "El contacto ha sido registrado con éxito");
+        response.put("contacto", contactoNew);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+
+    }
+
+    @GetMapping("/contacto")
+    public List<Contacto> indexContacto() {
+        return clienteService.findAllContact();
+    }
+
+    //Cambiar estado de mensaje
+    @PutMapping("/contacto/{id}")
+    public  ResponseEntity<?> updateContacto(@Valid @RequestBody Contacto contacto, BindingResult result
+            ,@PathVariable Integer id){
+        Contacto updatedContacto = null;
+        Contacto contactoActual = clienteService.findContactById(id);
+        Map<String, Object> response = new HashMap<>();
+        if (result.hasErrors()){
+            List<String> errors= result.getFieldErrors()
+                    .stream()
+                    .map(err -> "El campo '"+err.getField()+"' "+err.getDefaultMessage())
+                    .collect(Collectors.toList());
+            response.put("errors", errors);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+        }
+        if (contactoActual ==null){
+            response.put("mensaje", "Error: no se puede editar, El Product ID: ".concat(id.toString()
+                    .concat(" no existe en la base de datos")));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        try {
+            contactoActual.setEstado("Revisado");
+            updatedContacto=clienteService.saveContact(contactoActual);
+
+        }
+        catch (DataAccessException e){
+            response.put("mensaje", "Error al actualizar en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("mensaje", "El contacto ha sido actualizado con éxito");
+        response.put("contacto", updatedContacto);
+        return  new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+
+    }
 
 }

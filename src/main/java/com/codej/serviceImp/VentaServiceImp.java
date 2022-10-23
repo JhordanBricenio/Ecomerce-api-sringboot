@@ -36,4 +36,8 @@ public class VentaServiceImp implements IVentaService {
         ventaRepository.deleteById(id);
 
     }
+    @Override
+    public List<Venta> findAllVentasPorId(Integer id) {
+        return ventaRepository.findAllVentasPorId(id);
+    }
 }

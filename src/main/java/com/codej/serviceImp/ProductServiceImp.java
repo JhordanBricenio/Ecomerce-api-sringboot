@@ -1,9 +1,6 @@
 package com.codej.serviceImp;
 
-import com.codej.model.Categoria;
-import com.codej.model.Inventario;
-import com.codej.model.Marca;
-import com.codej.model.Product;
+import com.codej.model.*;
 import com.codej.repository.*;
 import com.codej.service.IProductService;
 import org.springframework.data.domain.Page;
@@ -18,11 +15,17 @@ public class ProductServiceImp implements IProductService {
 
     private IProductRepository productRepository;
     private IInventarioRepository inventarioRepository;
+    private IVariedadRepository variedadRepository;
+    private IImagesRepository imagenRepository;
 
     public ProductServiceImp(IProductRepository productRepository,
-                                IInventarioRepository inventarioRepository) {
+                                IInventarioRepository inventarioRepository,
+                                IVariedadRepository variedadRepository,
+                             IImagesRepository imagenRepository) {
         this.productRepository = productRepository;
         this.inventarioRepository = inventarioRepository;
+        this.variedadRepository = variedadRepository;
+        this.imagenRepository= imagenRepository;
     }
 
     @Override
@@ -79,6 +82,16 @@ public class ProductServiceImp implements IProductService {
     @Override
     public List<Product> findByCategoria(Integer id) {
         return productRepository.findByCategoria(id);
+    }
+
+    @Override
+    public Variedad guardar(Variedad variedad) {
+        return variedadRepository.save(variedad);
+    }
+
+    @Override
+    public Imagen guardar(Imagen galeria) {
+        return imagenRepository.save(galeria);
     }
 
 

@@ -55,19 +55,13 @@ public class Venta {
         this.dventas = new ArrayList<>();
     }
 
-    public double getSubtotal() {
+   /* public double getSubtotal() {
         double total = 0;
         for (DVenta dventa : dventas) {
             total += dventa.getSubtotal();
         }
         return total;
-    }
-    //Generar el numero de venta
-    public String getNventa() {
-        return "0000000" + id;
-    }
-
-
+    }*/
 
 
 }

@@ -27,4 +27,8 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
     @Query("from Product where categorias_id = ?1")
     public List<Product> findByCategoria(Integer id);
 
+    //insertar variedad
+
+
+
 }
