@@ -1,10 +1,12 @@
 package com.codej.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Data
+@Builder
 @Entity
 @Table(name = "admin")
 public class Admin {

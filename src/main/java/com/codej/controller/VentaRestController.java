@@ -9,12 +9,14 @@ import com.codej.serviceImp.UsuarioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -91,5 +93,20 @@ public class VentaRestController {
     public Venta showDetalle(@PathVariable Integer id) {
         return ventaService.findById(id);
     }
+
+    //Filtrar ventas por fechas
+    //Filtrar ventas por fechas no parametros no obligatorios
+    @GetMapping("/ventas/fechas")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Venta> showFechas2(@RequestParam(required = false) Date fecha1,
+                                  @RequestParam(required = false) Date fecha2) {
+        if (fecha1 == null || fecha2 == null) {
+            return ventaService.findAll();
+        }
+        return ventaService.findAllVentasPorFechas(fecha1, fecha2);
+    }
+
+
+
 
 }

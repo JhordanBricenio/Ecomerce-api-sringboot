@@ -37,6 +37,20 @@ public class DireccioRestController {
     public void delete(@PathVariable Integer id) {
         direccionService.delete(id);
     }
+    //Cambiar direccion principal
+    @PutMapping("/direcciones/{id}/{idCliente}")
+    public Direccion update( @PathVariable Integer id, @PathVariable Integer idCliente) {
+        List<Direccion> direcciones = direccionService.findByCliente(idCliente);
+        for (Direccion d: direcciones) {
+            if(d.isPrincipal() == true){
+                d.setPrincipal(false);
+                direccionService.save(d);
+            }
+        }
+        Direccion direccionActual = direccionService.findById(id);
+        direccionActual.setPrincipal(true);
+        return direccionService.save(direccionActual);
+    }
 
 
 }

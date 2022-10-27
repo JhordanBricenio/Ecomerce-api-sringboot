@@ -23,10 +23,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
@@ -42,7 +39,7 @@ public class ProductRestController {
         this.uploadService = uploadService;
     }
     //Listar todos los productos
-    @GetMapping("/products")
+    @GetMapping("/productsss")
     public List<Product> index() {
         return productService.findAll();
     }
@@ -52,8 +49,35 @@ public class ProductRestController {
         Pageable pageable = PageRequest.of(page, 6);
         return productService.findAll(pageable);
     }
+    //Paginar y filtrar
+    @GetMapping("/products")
+    public ResponseEntity<Map<String, Object>> getAllProducts(
+            @RequestParam(required = false) String filtro,
+            @RequestParam(defaultValue = "0") int page   ) {
 
+        try {
+            List<Product> products;
+            Pageable paging = PageRequest.of(page, 6);
 
+            Page<Product> pageProducts;
+            if (filtro == null)
+                pageProducts = productService.findAll(paging);
+            else
+                pageProducts = productService.findAllByTitulo(filtro, paging);
+
+            products = pageProducts.getContent();
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("products", products);
+            response.put("currentPage", pageProducts.getNumber());
+            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalPages", pageProducts.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     //Crear un nuevo producto
     @PostMapping("/products")
     public ResponseEntity<?> create (@Valid @RequestBody Product product, BindingResult result){

@@ -26,9 +26,13 @@ public class Direccion {
 
     //Relacion con direcciones
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"direcciones","hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties(value = {"direcciones","hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "clientes_id")
     private Cliente cliente;
+
+    public boolean isPrincipal() {
+        return principal;
+    }
 
 
 }

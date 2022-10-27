@@ -35,4 +35,9 @@ public class CuponServiceImp implements ICuponService {
     public void delete(Integer id) {
         cuponRepository.deleteById(id);
     }
+
+    @Override
+    public Cupon findByCodigo(String codigo) {
+        return cuponRepository.findByCodigo(codigo);
+    }
 }

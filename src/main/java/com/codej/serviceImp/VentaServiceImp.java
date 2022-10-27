@@ -5,6 +5,8 @@ import com.codej.repository.IVentaRepository;
 import com.codej.service.IVentaService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,5 +41,10 @@ public class VentaServiceImp implements IVentaService {
     @Override
     public List<Venta> findAllVentasPorId(Integer id) {
         return ventaRepository.findAllVentasPorId(id);
+    }
+
+    @Override
+    public List<Venta> findAllVentasPorFechas(Date fecha1, Date fecha2) {
+        return ventaRepository.findAllVentasPorFechas(fecha1,fecha2);
     }
 }

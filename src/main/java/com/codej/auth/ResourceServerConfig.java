@@ -30,6 +30,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/api/clientes", "/api/upload/img/**"
                         ,"/uploads/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/categorias/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/promocion/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api/categorias/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/ventas/**").permitAll()
 

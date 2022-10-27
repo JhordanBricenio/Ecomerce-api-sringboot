@@ -34,9 +34,14 @@ public class ProductServiceImp implements IProductService {
         return productRepository.findAll();
     }
 
-    @Override
+     @Override
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByTitulo(String filtro, Pageable pageable) {
+        return productRepository.findByTituloContaining(filtro, pageable);
     }
 
     @Override

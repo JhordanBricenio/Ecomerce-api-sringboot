@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface IDireccionService {
     public List<Direccion> findAll();
 
+    public Direccion findById(Integer id);
+
     //Obentener direccion principal
     public Direccion findByClientePrincipal(Integer id);
     public List<Direccion> findByCliente(Integer id);

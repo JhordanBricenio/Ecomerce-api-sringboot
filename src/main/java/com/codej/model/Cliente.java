@@ -50,7 +50,7 @@ public class Cliente  {
     private List<Rol> roles;
 
     //Relacion con direcciones
-    @JsonIgnoreProperties({"cliente","hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties(value ={"cliente","hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Direccion> direcciones;
 

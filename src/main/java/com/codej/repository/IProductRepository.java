@@ -4,6 +4,8 @@ import com.codej.model.Categoria;
 import com.codej.model.Inventario;
 import com.codej.model.Marca;
 import com.codej.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,6 +15,14 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("from Categoria")
     public List<Categoria> findAllCategories();
+
+    //Filtrar por titulo
+    @Query("from Product p where p.titulo like %?1%")
+    public List<Product> findAllByNombre(String filtro);
+
+    //Filtrar por titulo
+    Page<Product> findByTituloContaining(String filtro, Pageable pageable);
+
     @Query("from Marca")
     public List<Marca> findAllMarcas();
 

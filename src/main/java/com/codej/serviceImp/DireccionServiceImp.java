@@ -23,6 +23,11 @@ public class DireccionServiceImp implements IDireccionService {
     }
 
     @Override
+    public Direccion findById(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
     public Direccion findByClientePrincipal(Integer id) {
         return repository.findByClientePrincipal(id);
     }

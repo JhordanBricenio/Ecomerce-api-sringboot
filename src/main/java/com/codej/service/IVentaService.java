@@ -4,6 +4,8 @@ import com.codej.controller.VentaRestController;
 import com.codej.model.Direccion;
 import com.codej.model.Venta;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface IVentaService {
@@ -15,5 +17,9 @@ public interface IVentaService {
 
     //Obtener todas las ventas de un cliente
     List<Venta> findAllVentasPorId(Integer id);
+
+    //Filtrar ventas por fechas
+    List<Venta> findAllVentasPorFechas(Date fecha1, Date fecha2);
+
 
 }

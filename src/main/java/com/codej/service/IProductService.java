@@ -8,7 +8,12 @@ import java.util.List;
 
 public interface IProductService {
     public List<Product> findAll();
+
+    //Buscar por nombre y paginado
     public Page<Product> findAll(Pageable pageable);
+
+    //Buscar por nombre y paginado
+    public Page<Product> findAllByTitulo(String filtro, Pageable pageable);
     public Product findById(Integer id);
     public Product save (Product product);
     public void delete(Integer id);

@@ -18,6 +18,8 @@ public class DVenta {
     private double cantidad;
     private Date fecha;
     private Integer venta_id;
+    @Column(nullable = false)
+    private String talla;
 
     //Relacion con producto
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

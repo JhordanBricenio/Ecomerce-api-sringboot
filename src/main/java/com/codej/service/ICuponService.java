@@ -10,4 +10,5 @@ public interface ICuponService {
     public Cupon findById(Integer id);
     public Cupon save (Cupon cupon);
     public void delete(Integer id);
+    public Cupon findByCodigo(String codigo);
 }

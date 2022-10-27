@@ -1,5 +1,6 @@
 package com.codej.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import java.util.Date;
 
 @Data
 @Entity
+@Builder
 @Table(name = "cupon")
 public class Cupon {
     @Id
