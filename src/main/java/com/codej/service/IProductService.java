@@ -37,4 +37,10 @@ public interface IProductService {
     //Guardar galeria
     public Imagen guardar (Imagen galeria);
 
+    //Contar productos por categoria
+    public Integer countByCategoria(Integer id);
+
+    //Contar todos los productos
+    public Integer countAll();
+
 }

@@ -50,6 +50,11 @@ public class ClienteServiceImp implements IClienteService {
     }
 
     @Override
+    public Page<Cliente> findByApellidosContaining(String filtro, Pageable pageable) {
+        return clienteRepository.findByApellidosContaining(filtro,pageable);
+    }
+
+    @Override
     public Contacto saveContact(Contacto contacto) {
         return contactoRepository.save(contacto);
     }

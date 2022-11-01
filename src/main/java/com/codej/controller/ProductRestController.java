@@ -290,7 +290,17 @@ public class ProductRestController {
     public List<Product> listProductsByCategory(@PathVariable Integer id) {
             return productService.findByCategoria(id);
     }
+    //Contar productos por categoria
+    @GetMapping("/products/categoria/count/{id}")
+    public Integer countProductsByCategory(@PathVariable Integer id) {
+        return productService.countByCategoria(id);
+    }
 
+    //Contar todos los productos
+    @GetMapping("/products/count")
+    public Integer countProducts() {
+        return productService.countAll();
+    }
 
     //Relacionar producto con varieda
     @PostMapping("/products/variedad")

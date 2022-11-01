@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Data
 @Entity
-@Builder
 @Table(name = "cupon")
 public class Cupon {
     @Id

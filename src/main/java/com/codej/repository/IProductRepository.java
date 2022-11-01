@@ -37,7 +37,13 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
     @Query("from Product where categorias_id = ?1")
     public List<Product> findByCategoria(Integer id);
 
-    //insertar variedad
+    //Contar productos por categoria
+    @Query("select count(*) from Product where categorias_id = ?1")
+    public Integer countByCategoria(Integer id);
+
+    //Contar todos los productos
+    @Query("select count(*) from Product")
+    public Integer countAll();
 
 
 

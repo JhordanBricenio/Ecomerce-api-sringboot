@@ -99,5 +99,15 @@ public class ProductServiceImp implements IProductService {
         return imagenRepository.save(galeria);
     }
 
+    @Override
+    public Integer countByCategoria(Integer id) {
+        return productRepository.countByCategoria(id);
+    }
+
+    @Override
+    public Integer countAll() {
+        return productRepository.countAll();
+    }
+
 
 }

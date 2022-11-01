@@ -2,6 +2,7 @@ package com.codej.controller;
 
 import com.codej.model.Cliente;
 import com.codej.model.Contacto;
+import com.codej.model.Product;
 import com.codej.model.Rol;
 import com.codej.service.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class ClienteRestController {
         this.clienteService = clienteService;
     }
     //Listar todos los admis
-    @GetMapping("/clientes")
+    @GetMapping("/clientesss")
     public List<Cliente> index() {
         return clienteService.findAll();
     }
@@ -45,6 +46,38 @@ public class ClienteRestController {
         Pageable pageable = PageRequest.of(page, 3);
         return clienteService.findAll(pageable);
     }
+
+//Filtrar y listar clientes paginados
+@GetMapping("/clientes")
+public ResponseEntity<Map<String, Object>> getAllClientes(
+        @RequestParam(required = false) String filtro,
+        @RequestParam(defaultValue = "0") int page   ) {
+
+    try {
+        List<Cliente> clientes;
+        Pageable paging = PageRequest.of(page, 6);
+
+        Page<Cliente> pageClients;
+        if (filtro == null)
+            pageClients = clienteService.findAll(paging);
+        else
+            pageClients = clienteService.findByApellidosContaining(filtro, paging);
+
+        clientes = pageClients.getContent();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("clientes", clientes);
+        response.put("currentPage", pageClients.getNumber());
+        response.put("totalItems", pageClients.getTotalElements());
+        response.put("totalPages", pageClients.getTotalPages());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    } catch (Exception e) {
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+    //Crear un nuevo producto
+
 
     //Crear un nuevo cliente
     @PostMapping("/clientes")
