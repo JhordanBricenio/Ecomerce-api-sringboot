@@ -23,6 +23,7 @@ public class Venta {
     private String transaccion;
     private String estado;
     private String nota;
+    private String direccion;
     @Temporal(TemporalType.DATE)
     private Date fecha;
 
@@ -37,12 +38,6 @@ public class Venta {
     @JsonIgnoreProperties({"ventas","hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "clientes_id")
     private Cliente cliente;
-
-
-    @JsonIgnoreProperties({"cliente","hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "direccion_id")
-    private Direccion direccion;
 
     //Relacion con dventa
     //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

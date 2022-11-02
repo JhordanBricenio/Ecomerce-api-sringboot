@@ -21,9 +21,31 @@ public class DireccioRestController {
     public Direccion findByClientePrincipal(@PathVariable Integer id){
         return direccionService.findByClientePrincipal(id);
     }
+    /*
+    * "id": 8,
+    "destinatario": "Hugo Voluarte",
+    "dni": "77349223",
+    "zip": "13301",
+    "direccion": "lima 545",
+    "pais": "Perú",
+    "region": "La Libertad",
+    "provincia": "Sánchez Carrión ",
+    "distrito": "Huamachuco",
+    "telefono": "+51995052331",
+    "principal": true,*/
 
     @PostMapping("/direcciones")
     public Direccion create(@RequestBody Direccion direccion) {
+        //Si ya existe una direccion principal, se cambia a false
+        if(direccion.isPrincipal()){
+            Direccion direccionPrincipal = direccionService
+                    .findByClientePrincipal(direccion.getCliente().getId());
+            if(direccionPrincipal != null){
+                direccionPrincipal.setPrincipal(false);
+                direccionService.save(direccionPrincipal);
+            }
+            direccionService.save(direccion);
+        }
         return direccionService.save(direccion);
     }
 
