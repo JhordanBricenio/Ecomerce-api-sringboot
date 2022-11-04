@@ -8,11 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class ApiRestEcomerceApplicationTests {
 
-	@Autowired
-	private ICuponRepository cuponRepository;
-
-
-
 	@Test
 	void contextLoads() {
 
