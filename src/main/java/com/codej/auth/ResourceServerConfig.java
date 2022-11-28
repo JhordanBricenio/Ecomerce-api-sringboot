@@ -23,24 +23,29 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/api/**", "/api/upload/img/**"
+                .antMatchers(HttpMethod.GET, "/api/upload/img/**"
                         ,"/uploads/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/products/**", "/api/upload/img/**"
+                .antMatchers(HttpMethod.GET, "/api/uploads/img/**"
                         ,"/uploads/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/clientes", "/api/upload/img/**"
+                .antMatchers(HttpMethod.GET, "/api/uploadss/img/**"
                         ,"/uploads/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/categorias/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/promocion/**").permitAll()
-                .antMatchers(HttpMethod.PUT,"/api/categorias/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/ventas/**").permitAll()
+                .antMatchers("/api/direcciones/**").permitAll()
+                .antMatchers("/api/cupon/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/contacto").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/products/**", "/api/upload/img/**"
+                        ,"/uploads/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/promocion/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/productss").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/productsss").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/clientes/**").permitAll()
 
-                .antMatchers(HttpMethod.POST,"/api/contacto/**").permitAll()
+                /*.antMatchers(HttpMethod.POST,"/api/contacto/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/products/variedad/**").permitAll()
 
                 .antMatchers(HttpMethod.PUT,"/api/**", "/api/upload/img/**"
                 ,"/uploads/**").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/api/**", "/api/upload/img/**"
-                        ,"/images/**").permitAll()
+                        ,"/images/**").permitAll()*/
 
                 //.antMatchers(HttpMethod.POST,"/api/products").hasAnyRole("USER", "ADMIN")
                //.antMatchers(HttpMethod.PUT,"/api/categorias/**").permitAll()
@@ -52,7 +57,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));

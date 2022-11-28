@@ -1,6 +1,6 @@
 package com.codej.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -18,6 +18,7 @@ public class Venta {
     private Integer id;
     private String nventa;
     private double subtotal;
+    private Double totalPagar;
     private String envio_titulo;
     private double envio_precio;
     private String transaccion;

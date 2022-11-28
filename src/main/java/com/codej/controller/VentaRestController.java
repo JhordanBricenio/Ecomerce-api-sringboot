@@ -12,6 +12,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,8 +49,9 @@ public class VentaRestController {
     public List<Venta> show(@PathVariable Integer id) {
         return ventaService.findAllVentasPorId(id);
     }
+
     @PostMapping("/ventas")
-    public ResponseEntity<?> create (@Valid @RequestBody Venta venta, BindingResult result){
+      public ResponseEntity<?> create (@Valid @RequestBody Venta venta, BindingResult result){
         venta.setNventa("N"+new Date().getTime());
         Product productActual = null;
         //Relacionar venta con dventa
@@ -96,6 +98,7 @@ public class VentaRestController {
 
     //Filtrar ventas por fechas
     //Filtrar ventas por fechas no parametros no obligatorios
+    @Secured("ROLE_ADMIN")
     @GetMapping("/ventas/fechas")
     @ResponseStatus(HttpStatus.OK)
     public List<Venta> showFechas2(@RequestParam(required = false) Date fecha1,

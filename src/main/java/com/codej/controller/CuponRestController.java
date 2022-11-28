@@ -7,6 +7,7 @@ import com.codej.service.ICuponService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -26,6 +27,8 @@ public class CuponRestController {
     public List<Cupon> index() {
         return cuponService.findAll();
     }
+
+    @Secured("ROLE_ADMIN")
     @PostMapping("/cupones")
     public Cupon create(@RequestBody Cupon cupon) {
         return cuponService.save(cupon);
@@ -35,11 +38,12 @@ public class CuponRestController {
     public Cupon show(@PathVariable Integer id) {
         return cuponService.findById(id);
     }
-
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/cupones/{id}")
     public void delete(@PathVariable Integer id) {
         cuponService.delete(id);
     }
+    @Secured("ROLE_ADMIN")
     @PutMapping("/cupones/{id}")
     public Cupon update(@RequestBody Cupon cupon, @PathVariable Integer id) {
         Cupon cuponActual = cuponService.findById(id);
@@ -80,6 +84,21 @@ public class CuponRestController {
 
     }
     //Disminuir el limite del cupon
+
+    //Buscar cupon activo
+    @GetMapping("/cupon/activo")
+    public Cupon cuponActivo() {
+        List<Cupon> cupones = cuponService.findAll();
+        Cupon cuponActivo = null;
+        for (Cupon cupon: cupones) {
+            if(cupon.getLimite()>0){
+                cuponActivo = cupon;
+            }
+        }
+        return cuponActivo;
+    }
+
+
 
 
 

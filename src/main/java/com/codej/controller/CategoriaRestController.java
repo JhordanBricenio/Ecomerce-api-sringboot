@@ -35,11 +35,13 @@ public class CategoriaRestController {
         return categoriaService.findAll();
     }
     //Guardar una categoria
+    @Secured("ROLE_ADMIN")
     @PostMapping("/categorias")
     public Categoria create(@RequestBody Categoria categoria) {
         return categoriaService.save(categoria);
     }
     //Actualizar categoria
+    @Secured("ROLE_ADMIN")
     @PutMapping("/categorias/{id}")
     public Categoria update(@RequestBody Categoria categoria, @PathVariable Integer id) {
         Categoria categoriaActual = categoriaService.findById(id);
@@ -53,6 +55,7 @@ public class CategoriaRestController {
         return categoriaService.findById(id);
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/categorias/{id}")
     public void delete(@PathVariable Integer id) {
         categoriaService.delete(id);
@@ -72,6 +75,7 @@ public class CategoriaRestController {
         return new ResponseEntity<Resource>(recurso,cabecera, HttpStatus.OK);
     }
     //Guardar foto
+    @Secured("ROLE_ADMIN")
     @PostMapping("/categorias/upload")
     public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Integer id) {
         Map<String, Object> response = new HashMap<>();

@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +37,7 @@ public class PromocionRestController {
         return promocionService.findByTitulo(titulo);
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/promocion")
     public Promocion create(@RequestBody Promocion promocion) {
         return promocionService.save(promocion);
@@ -46,10 +48,13 @@ public class PromocionRestController {
         return promocionService.findById(id);
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/promocion/{id}")
     public void delete(@PathVariable Integer id) {
         promocionService.delete(id);
     }
+
+    @Secured("ROLE_ADMIN")
     @PutMapping("/promocion/{id}")
     public Promocion update(@RequestBody Promocion cupon, @PathVariable Integer id) {
         Promocion promocionActual = promocionService.findById(id);
@@ -72,6 +77,7 @@ public class PromocionRestController {
         return new ResponseEntity<Resource>(recurso,cabecera, HttpStatus.OK);
     }
     //Guardar foto
+    @Secured("ROLE_ADMIN")
     @PostMapping("/promocion/upload")
     public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Integer id) {
         Map<String, Object> response = new HashMap<>();

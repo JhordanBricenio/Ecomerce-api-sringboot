@@ -79,6 +79,7 @@ public class ProductRestController {
         }
     }
     //Crear un nuevo producto
+    @Secured("ROLE_ADMIN")
     @PostMapping("/products")
     public ResponseEntity<?> create (@Valid @RequestBody Product product, BindingResult result){
         Product productNew = null;
@@ -225,6 +226,7 @@ public class ProductRestController {
         return  new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/products/upload")
     public ResponseEntity<?> upload(@RequestParam("file") MultipartFile archivo, @RequestParam("id") Integer id) {
         Map<String, Object> response = new HashMap<>();
@@ -303,6 +305,7 @@ public class ProductRestController {
     }
 
     //Relacionar producto con varieda
+    @Secured("ROLE_ADMIN")
     @PostMapping("/products/variedad")
     public ResponseEntity<?> addVariedad(@RequestBody Variedad variedad) {
         Variedad variedadNew = null;
@@ -321,6 +324,7 @@ public class ProductRestController {
     }
 
     //Añadir galeria de imagenes a producto
+    @Secured("ROLE_ADMIN")
     @PostMapping("/products/galeria")
     public ResponseEntity<?> uploadGaleria(@RequestParam("file") MultipartFile archivo, @RequestParam("galeria")
     String galeria) {
